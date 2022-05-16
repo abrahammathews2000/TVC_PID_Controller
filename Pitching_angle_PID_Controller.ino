@@ -9,6 +9,8 @@ Revision Notes:
 1. Placed calling of pid function outside the if loop
 of writing of angle to SD Card
 2. Tried to arrange the code according to Barr C Standards
+3. In setup block, a starting sentence is added to the file in SD Card to distinguish it from old data previously stored.
+4. Convert PID output to int value
 */
 
 #include <MPU6050_light.h>// load mpu6050 library
@@ -39,6 +41,7 @@ of writing of angle to SD Card
 	Servo Xservo;// pitch servo
 	int servoAngleDefault = 85 ; //Default servoAngle i.e. 0th posn of TVC
 	int servopin_X=3;//servo X pin
+	int servoCommandAngle;
 
 
 
@@ -94,7 +97,15 @@ void setup()
 		Xservo.write(0);
 		Serial.println("Servo Angle =0"); // To display on screen
 		delay(2000);
-	
+
+	//Print the first line in the SD Card to distinguish the new readings from old
+		angleFile = SD.open("pitchAng.txt",FILE_WRITE); 
+		if (angleFile)
+		{
+			angleFile.print("Reading Start Here: ");
+			angleFile.close();
+		}
+
 	//Flag signal to alert when to ignite 
 		//Servo rotation as flag signal for igniting
 		Xservo.write(125);
@@ -134,11 +145,12 @@ void loop()
 	//PID Controller
 		pitchPID.run();
 		pidXout=servoAngleDefault+pidXout;//servoAngleDefault (i.e. offset of servo = 85 deg)
-		Xservo.write(pidXout); //Giving the command angle to the servo
+		servoCommandAngle = (int) pidXout;
+		Xservo.write(servoCommandAngle); //Giving the command angle to the servo
 		
 		//To diaplay PID output on screen
-		Serial.println("pidXout");
-		Serial.println(pidXout);
+		Serial.println("servoCommandAngle");
+		Serial.println(servoCommandAngle);
 
 		delay(100);
 	
