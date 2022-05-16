@@ -101,7 +101,7 @@ void setup()
 		Serial.println("Servo Angle =125"); // To display on screen
 		delay(10000); //10s delay
 		Xservo.write(servoAngleDefault);// Flag Servo signal at 90 deg (physical)
-		Serial.println("Servo Angle = ", servoAngleDefault); // To display on screen
+		Serial.println("Servo Angle = 85"); // To display on screen
 		delay(2000);
 	pitchPID.setTimeStep(40);//set PID update interval to 40ms
 
