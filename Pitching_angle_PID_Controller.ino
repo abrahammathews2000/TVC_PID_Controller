@@ -4,11 +4,15 @@ Last updated: 17 May 2022
 Author: Adithya Praveen
 Description: This program is used to store the pitch angle in the SD Card and produce PID output corresponding the pitch angle and the reference pitch angle. File name in which angle is saved is: pitchAng.txt. Y angle from MPU6050 is the pitch angle
 Revision Notes:
+
+May 16, 2022
 1. Placed calling of pid function outside the if loop
 of writing of angle to SD Card
 2. Tried to arrange the code according to Barr C Standards
 3. In setup block, a starting sentence is added to the file in SD Card to distinguish it from old data previously stored.
 4. Convert PID output to int value
+
+May 17, 2022
 5. Kp changed from 0.5 to 1.2
 6. Kd changed from 0.3 to 0
 7. Servo min and max angle changed from +/-20 to +/-40
