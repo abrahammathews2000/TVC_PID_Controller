@@ -12,6 +12,9 @@ of writing of angle to SD Card
 5. Kp changed from 0.5 to 1.2
 6. Kd changed from 0.3 to 0
 7. Servo min and max angle changed from +/-20 to +/-40
+8. Initialized servoCommandAngle as 0 deg
+9. In the SD Card, servo command angle is also saved along with time and pitching angle
+10. Reference angle of rocket is set as 30 deg.
 */
 
 #include <MPU6050_light.h>// load mpu6050 library
@@ -23,7 +26,7 @@ of writing of angle to SD Card
 #include<SPI.h> //Load SPI Library
 
 //Reference Angle for the Rocket
-  double setpoint=0;
+  double setpoint=30;
 
 //Variables related with MPU6050
   double pitch;//for saving pitch angle
@@ -42,7 +45,7 @@ of writing of angle to SD Card
   Servo Xservo;// pitch servo
   int servoAngleDefault = 85 ; //Default servoAngle i.e. 0th posn of TVC
   int servopin_X=3;//servo X pin
-  int servoCommandAngle;
+  int servoCommandAngle = 0;
 
 
 
@@ -103,7 +106,9 @@ void setup()
     angleFile = SD.open("pitchAng.txt",FILE_WRITE); 
     if (angleFile)
     {
-      angleFile.print("Reading Start Here: ");
+      angleFile.println("Reading Start Here: ");
+      angleFile.println("(Time(ms),Pitch Angle (deg),Servo Input(deg)");
+      angleFile.println(" ");
       angleFile.close();
     }
 
@@ -132,9 +137,11 @@ void loop()
   if (angleFile)
   {
     pitch= mpu.getAngleY();
-    angleFile.print(myTime);
+    angleFile.println(myTime);
     angleFile.print(",");
-    angleFile.println(pitch); //write angle data to card 
+    angleFile.print(pitch); //write angle data to card 
+    angleFile.print(",");
+    angleFile.print(servoCommandAngle); // Print previous Servo Command Angle
     angleFile.close();
     
     Serial.println("pitch"); // To display pitch angle on screen
