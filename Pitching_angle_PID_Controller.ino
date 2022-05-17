@@ -149,7 +149,7 @@ void loop()
     servoCommandAngle = (int) pidXout;
     Xservo.write(servoCommandAngle); //Giving the command angle to the servo
     
-    //To diaplay PID output on screen
+    //To display PID output on screen
     Serial.println("servoCommandAngle");
     Serial.println(servoCommandAngle);
 
